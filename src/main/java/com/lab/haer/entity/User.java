@@ -22,7 +22,7 @@ public class User {
     private String company;
     private String username;
     private String fullName;
-    private Enum role;
+    private String role;
     private Date createdAt;
     private Date updatedAt;
 }
