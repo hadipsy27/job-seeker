@@ -1,4 +1,4 @@
-package com.lab.haer.user.enumeration;
+package com.lab.haer.enums;
 
 public class UserEnum {
 

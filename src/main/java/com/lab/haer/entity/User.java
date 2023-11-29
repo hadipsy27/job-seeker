@@ -1,6 +1,5 @@
-package com.lab.haer.user.entity;
+package com.lab.haer.entity;
 
-import com.lab.haer.user.enumeration.UserEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
