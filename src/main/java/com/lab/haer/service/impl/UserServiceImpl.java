@@ -8,9 +8,9 @@ import com.lab.haer.repository.UserRepository;
 import com.lab.haer.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Override
-    public void createAndUpdateUser(UserDto userDto) {
+    public User createAndUpdateUser(UserDto userDto) {
 
         final User user = new User();
         user.setFullName(userDto.getFullName());
@@ -36,7 +36,12 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = List.of(roleUser);
         user.setRoles(roles);
 
+        LocalDateTime dateTime = LocalDateTime.now();
+        user.setCreatedAt(dateTime);
+        user.setUpdatedAt(dateTime);
+
         userRepository.save(user);
         LOGGER.info(user.toString());
+        return user;
     }
 }

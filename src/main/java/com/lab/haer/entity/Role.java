@@ -1,11 +1,9 @@
 package com.lab.haer.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,4 +16,7 @@ public class Role {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+//    @ManyToMany(mappedBy = "role")
+//    private List<User> user;
 }
