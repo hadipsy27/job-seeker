@@ -1,9 +1,6 @@
 package com.lab.haer.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -33,14 +31,14 @@ public class User {
     @Column(name = "company")
     private String company;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_role", joinColumns = {
-//            @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    }, inverseJoinColumns = {
-//            @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    })
-//    private List<Role> roles;
-//
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "id")
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id", referencedColumnName = "id")
+    })
+    private List<Role> roles;
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Job> jobs;
 
