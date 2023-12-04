@@ -3,8 +3,8 @@ package com.lab.haer.service.impl;
 import com.lab.haer.dto.UserDto;
 import com.lab.haer.entity.Role;
 import com.lab.haer.entity.User;
-import com.lab.haer.repository.RoleRepository;
 import com.lab.haer.repository.UserRepository;
+import com.lab.haer.service.RoleService;
 import com.lab.haer.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -17,10 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final String USER = "USER";
     private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
-
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Override
     public User createAndUpdateUser(UserDto userDto) {
@@ -32,16 +32,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDto.getPassword());
         user.setCompany(userDto.getCompany());
 
-        final Role roleUser = roleRepository.findRoleByName("USER");
-        List<Role> roles = List.of(roleUser);
-        user.setRoles(roles);
+        final Role roleByName = roleService.findRoleById("1");
+        user.setRoles(List.of(roleByName));
 
         LocalDateTime dateTime = LocalDateTime.now();
         user.setCreatedAt(dateTime);
         user.setUpdatedAt(dateTime);
 
-        userRepository.save(user);
+        final User save = userRepository.save(user);
         LOGGER.info(user.toString());
-        return user;
+        return save;
     }
 }
