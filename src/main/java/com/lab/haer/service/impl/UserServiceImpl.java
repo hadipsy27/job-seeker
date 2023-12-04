@@ -16,9 +16,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private static final String USER = "USER";
     private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
+    private final static String ROLEID = "1";
+
     private UserRepository userRepository;
     private RoleService roleService;
 
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDto.getPassword());
         user.setCompany(userDto.getCompany());
 
-        final Role roleByName = roleService.findRoleById("1");
+        final Role roleByName = roleService.findRoleById(ROLEID);
         user.setRoles(List.of(roleByName));
 
         LocalDateTime dateTime = LocalDateTime.now();
