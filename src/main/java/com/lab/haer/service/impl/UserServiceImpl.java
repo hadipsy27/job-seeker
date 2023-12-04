@@ -1,6 +1,8 @@
 package com.lab.haer.service.impl;
 
-import com.lab.haer.dto.UserDto;
+import com.lab.haer.config.ModelMapperConfig;
+import com.lab.haer.dto.UserCreateDto;
+import com.lab.haer.dto.UserResponseDto;
 import com.lab.haer.entity.Role;
 import com.lab.haer.entity.User;
 import com.lab.haer.repository.UserRepository;
@@ -16,24 +18,28 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final static String ROLE_USER = "1";
+    private final static String ROLE_HR = "2";
+    private final static String ROLE_ADMIN = "3";
     private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
-    private final static String ROLE_ID = "1";
-
+    private ModelMapperConfig modelMapperConfig;
     private UserRepository userRepository;
     private RoleService roleService;
 
     @Override
-    public User createAndUpdateUser(UserDto userDto) {
+    public UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto) {
 
         final User user = new User();
-        user.setFullName(userDto.getFullName());
-        user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setCompany(userDto.getCompany());
+        user.setFullName(userCreateDto.getFullName());
+        user.setEmail(userCreateDto.getEmail());
+        user.setUsername(userCreateDto.getUsername());
+        user.setPassword(userCreateDto.getPassword());
+        user.setCompany(userCreateDto.getCompany());
 
-        final Role roleById = roleService.findRoleById(ROLE_ID);
-        user.setRoles(List.of(roleById));
+        // Role can set by static attribute list [ROLE_USER, ROLE_HR, ROLE_ADMIN]
+        final List<Role> roleById = roleService.findRoleByIdList(List.of(ROLE_USER));
+        LOGGER.info(roleById.toString());
+        user.setRoles(roleById);
 
         LocalDateTime dateTime = LocalDateTime.now();
         user.setCreatedAt(dateTime);
@@ -41,6 +47,12 @@ public class UserServiceImpl implements UserService {
 
         final User save = userRepository.save(user);
         LOGGER.info(user.toString());
-        return save;
+
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto = modelMapperConfig.modelMapper().map(save, userResponseDto.getClass());
+        userResponseDto.setRoles(roleById.stream().map(Role::getName).toList());
+
+        LOGGER.info(userResponseDto.toString());
+        return userResponseDto;
     }
 }

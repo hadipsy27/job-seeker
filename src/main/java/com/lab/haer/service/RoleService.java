@@ -2,7 +2,9 @@ package com.lab.haer.service;
 
 import com.lab.haer.entity.Role;
 
+import java.util.List;
+
 public interface RoleService {
 
-    public Role findRoleById(String roleId);
+    public List<Role> findRoleByIdList(List<String> roleId);
 }

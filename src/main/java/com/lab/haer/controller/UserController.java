@@ -1,6 +1,7 @@
 package com.lab.haer.controller;
 
-import com.lab.haer.dto.UserDto;
+import com.lab.haer.dto.UserCreateDto;
+import com.lab.haer.dto.UserResponseDto;
 import com.lab.haer.entity.User;
 import com.lab.haer.service.UserService;
 import com.lab.haer.util.ResponseHandler;
@@ -20,9 +21,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<Object> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> createUser(@RequestBody UserCreateDto userCreateDto) {
         try{
-            User response =  userService.createAndUpdateUser(userDto);
+            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto);
             return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

@@ -1,9 +1,9 @@
 package com.lab.haer.service;
 
-import com.lab.haer.dto.UserDto;
-import com.lab.haer.entity.User;
+import com.lab.haer.dto.UserCreateDto;
+import com.lab.haer.dto.UserResponseDto;
 
 public interface UserService {
 
-    User createAndUpdateUser(UserDto userDto);
+    UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto);
 }
