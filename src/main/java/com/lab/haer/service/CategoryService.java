@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    public String createCategory(CategoryDto categoryDto);
+    public CategoryDto createCategory(CategoryDto categoryDto);
 
     public List<Category> findCategories(List<String> categoryCodeList) throws BadRequestException;
 

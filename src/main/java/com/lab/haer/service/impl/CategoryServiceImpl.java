@@ -1,14 +1,15 @@
 package com.lab.haer.service.impl;
 
+import com.lab.haer.config.ModelMapperConfig;
 import com.lab.haer.dto.CategoryDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.repository.CategoryRepository;
 import com.lab.haer.service.CategoryService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,9 +22,12 @@ public class CategoryServiceImpl implements CategoryService {
     private final static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ModelMapperConfig modelMapper;
+
     @SneakyThrows
     @Override
-    public String createCategory(CategoryDto categoryDto) {
+    public CategoryDto createCategory(CategoryDto categoryDto) {
 
         final List<Category> categories = findCategories(List.of(categoryDto.getCode()));
         if (!categories.isEmpty()) throw new BadRequestException("Category Already Exists");
@@ -33,13 +37,17 @@ public class CategoryServiceImpl implements CategoryService {
         category.setCode(categoryDto.getCode());
 
         LocalDateTime dateTime = LocalDateTime.now();
+
         category.setCreatedAt(dateTime);
         category.setUpdatedAt(dateTime);
 
-        final Category save = categoryRepository.save(category);
+        final Category categorySave = categoryRepository.save(category);
         LOGGER.info(category.toString());
 
-        return save.getName();
+        CategoryDto result = modelMapper.modelMapper().map(categorySave, CategoryDto.class);
+        LOGGER.info(result.toString());
+
+        return result;
     }
 
     @Override
