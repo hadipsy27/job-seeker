@@ -1,5 +1,6 @@
 package com.lab.haer.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "`job`")
+@Table(name = "job")
 public class Job {
 
     @Id
@@ -25,9 +26,8 @@ public class Job {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = true, columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @Lob
     @Column(name = "sort_description")
     private String sortDescription;
     @CreatedDate
@@ -45,18 +45,29 @@ public class Job {
     private String location;
     @Column(name = "work_location_type")
     private String workLocationType;
+
+    @JsonFormat(pattern = "hh:mm")
     @Column(name = "work_time_form")
     private LocalTime workTimeForm;
+
+    @JsonFormat(pattern = "hh:mm")
     @Column(name = "work_time_to")
     private LocalTime workTimeTo;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "job_category", joinColumns = {
+    @JoinColumn(name="job_id", referencedColumnName = "id")},
+    inverseJoinColumns = {
+            @JoinColumn(name="category_code", referencedColumnName = "code")
+    })
     private List<Category> categories;
 
     @ManyToOne(fetch = FetchType.LAZY)

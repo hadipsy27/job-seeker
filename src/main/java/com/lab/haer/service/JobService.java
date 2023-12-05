@@ -4,6 +4,6 @@ import com.lab.haer.dto.JobCreateDto;
 
 public interface JobService {
 
-    public void createJob(JobCreateDto jobCreateDto);
+    public JobCreateDto createJob(JobCreateDto jobCreateDto);
 
 }

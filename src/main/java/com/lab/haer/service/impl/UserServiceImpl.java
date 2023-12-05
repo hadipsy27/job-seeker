@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
         LOGGER.info(userResponseDto.toString());
         return userResponseDto;
     }
+
+    public User findUserById(String id){
+        final User userById = userRepository.findUserById(id);
+        return userById;
+    }
 }

@@ -37,9 +37,6 @@ public class User {
     })
     private List<Role> roles;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Job> jobs;
-
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

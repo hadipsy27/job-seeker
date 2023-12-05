@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -34,8 +35,8 @@ public class Category {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
+    // Many to many relationships yang bersifat unidirectional (data categoy_code pada job_category tidak boleh ada lagi yang sama)
+    // @ManyToMany(mappedBy = "categories")
+    // private List<Job> jobs;
 
 }
