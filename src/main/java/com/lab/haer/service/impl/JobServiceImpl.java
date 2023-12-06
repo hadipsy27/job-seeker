@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,5 +95,17 @@ public class JobServiceImpl implements JobService {
 
         final JobAllResponseDto response = modelMapper.modelMapper().map(jobById, JobAllResponseDto.class);
         return response;
+    }
+
+    @Override
+    public List<JobAllResponseDto> getJobByUserId(String userId) {
+        final List<Job> jobList = jobRepository.findJobByUserId(userId);
+        if (jobList.isEmpty()) throw new RuntimeException("Job Not Found");
+        LOGGER.info(jobList.toString());
+
+        return jobList.stream().map(job -> {
+            final JobAllResponseDto response = modelMapper.modelMapper().map(job, JobAllResponseDto.class);
+            return response;
+        }).collect(Collectors.toList());
     }
 }

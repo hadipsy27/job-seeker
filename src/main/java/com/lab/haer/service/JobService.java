@@ -13,4 +13,6 @@ public interface JobService {
 
     JobAllResponseDto findJobById(String id);
 
+    List<JobAllResponseDto> getJobByUserId(String userId);
+
 }

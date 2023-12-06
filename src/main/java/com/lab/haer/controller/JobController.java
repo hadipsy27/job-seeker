@@ -48,4 +48,14 @@ public class JobController {
         }
     }
 
+    @GetMapping("/jobs/user/{userId}")
+    public ResponseEntity<Object> findJobByUserId(@PathVariable("userId") String userId) {
+        try {
+            final List<JobAllResponseDto> result = jobService.getJobByUserId(userId);
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
 }

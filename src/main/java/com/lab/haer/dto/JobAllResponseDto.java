@@ -1,5 +1,6 @@
 package com.lab.haer.dto;
 
+import com.lab.haer.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 public class JobAllResponseDto {
     private String id;
     private String title;
+    private String companyUser;
+    private String fullNameUser;
     private String uploadDate;
     private String salaryForm;
     private String salaryTo;
