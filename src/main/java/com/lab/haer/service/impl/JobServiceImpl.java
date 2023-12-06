@@ -35,7 +35,7 @@ public class JobServiceImpl implements JobService {
         Job job = new Job();
         job.setTitle(jobCreateDto.getTitle());
 
-        final List<Category> categories = categoryService.findCategories(jobCreateDto.getCategoryCodes());
+        final List<Category> categories = categoryService.findCategoriesByCodes(jobCreateDto.getCategoryCodes());
         LOGGER.info(categories.toString());
         job.setCategories(categories);
 

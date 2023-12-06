@@ -10,6 +10,10 @@ public interface CategoryService {
 
     public CategoryDto createCategory(CategoryDto categoryDto);
 
-    public List<Category> findCategories(List<String> categoryCodeList) throws BadRequestException;
+    public List<Category> findCategoriesByCodes(List<String> categoryCodeList) throws BadRequestException;
+
+    List<CategoryDto> getAllCategory();
+
+    CategoryDto findCategoryByCode(String code);
 
 }

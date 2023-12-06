@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
 
-        final List<Category> categories = findCategories(List.of(categoryDto.getCode()));
+        final List<Category> categories = findCategoriesByCodes(List.of(categoryDto.getCode()));
         if (!categories.isEmpty()) throw new BadRequestException("Category Already Exists");
 
         Category category = new Category();
@@ -51,8 +52,30 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findCategories(List<String> categoryCodeList) {
+    public List<Category> findCategoriesByCodes(List<String> categoryCodeList) {
         List<Category> categories = categoryRepository.findByCodeIn(categoryCodeList);
         return categories;
+    }
+
+    @Override
+    public List<CategoryDto> getAllCategory() {
+        final List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(category -> {
+            final CategoryDto categoryDto = modelMapper.modelMapper().map(category, CategoryDto.class);
+            return categoryDto;
+        }).collect(Collectors.toList());
+    }
+
+    @SneakyThrows
+    @Override
+    public CategoryDto findCategoryByCode(String code) {
+        final Category categoryByCode = categoryRepository.findCategoryByCode(code);
+        if (categoryByCode == null) throw new BadRequestException("Category Not Found");
+
+        final CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCode(categoryByCode.getCode());
+        categoryDto.setName(categoryByCode.getName());
+
+        return categoryDto;
     }
 }
