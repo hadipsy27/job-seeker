@@ -1,6 +1,7 @@
 package com.lab.haer.service.impl;
 
 import com.lab.haer.config.ModelMapperConfig;
+import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.entity.Job;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -70,5 +72,27 @@ public class JobServiceImpl implements JobService {
 
         return result;
 
+    }
+
+    @Override
+    public List<JobAllResponseDto> findAllJob() {
+        final List<Job> jobList = jobRepository.findAll();
+        if (jobList.isEmpty()) throw new RuntimeException("Job Not Found");
+        LOGGER.info(jobList.toString());
+
+        return jobList.stream().map(job -> {
+            final JobAllResponseDto response = modelMapper.modelMapper().map(job, JobAllResponseDto.class);
+            return response;
+        }).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public JobAllResponseDto findJobById(String id) {
+        final Job jobById = jobRepository.findJobById(id);
+        if (jobById == null) throw new RuntimeException("Job Not Found");
+
+        final JobAllResponseDto response = modelMapper.modelMapper().map(jobById, JobAllResponseDto.class);
+        return response;
     }
 }

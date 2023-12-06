@@ -4,4 +4,6 @@ import com.lab.haer.entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JobRepository extends JpaRepository<Job, String> {
+
+    public Job findJobById(String id);
 }

@@ -1,15 +1,15 @@
 package com.lab.haer.controller;
 
+import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
 import com.lab.haer.service.JobService;
 import com.lab.haer.util.ResponseHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -23,6 +23,26 @@ public class JobController {
         try {
             final JobCreateDto result = jobService.createJob(jobCreateDto);
             return ResponseHandler.generateResponse("Success", HttpStatus.CREATED, result);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
+    @GetMapping("/jobs")
+    private ResponseEntity<Object> findAllJob() {
+        try {
+            final List<JobAllResponseDto> result = jobService.findAllJob();
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
+    @GetMapping("/jobs/{id}")
+    private ResponseEntity<Object> findJobById(@PathVariable("id") String id) {
+        try {
+            final JobAllResponseDto result = jobService.findJobById(id);
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
