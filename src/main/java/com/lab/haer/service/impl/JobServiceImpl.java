@@ -3,6 +3,7 @@ package com.lab.haer.service.impl;
 import com.lab.haer.config.ModelMapperConfig;
 import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
+import com.lab.haer.dto.JobUpdateDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.entity.Job;
 import com.lab.haer.entity.User;
@@ -16,7 +17,6 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +73,40 @@ public class JobServiceImpl implements JobService {
 
         return result;
 
+    }
+
+    @SneakyThrows
+    @Override
+    public JobUpdateDto updateJob(String id, JobUpdateDto jobUpdateDto) {
+
+        final Job jobById = jobRepository.findJobById(String.valueOf(id));
+        if (jobById == null) throw new RuntimeException("Job Not Found");
+
+        jobById.setTitle(jobUpdateDto.getTitle());
+
+        final List<Category> categories = categoryService.findCategoriesByCodes(jobUpdateDto.getCategoryCodes());
+        LOGGER.info(categories.toString());
+        jobById.setCategories(categories);
+
+        jobById.setSortDescription(jobUpdateDto.getSortDescription());
+        jobById.setDescription(jobUpdateDto.getDescription());
+        jobById.setSalaryForm(jobUpdateDto.getSalaryForm());
+        jobById.setSalaryTo(jobUpdateDto.getSalaryTo());
+        jobById.setDegreeLevel(jobUpdateDto.getDegreeLevel());
+        jobById.setWorkTimeType(jobUpdateDto.getWorkTimeType());
+        jobById.setLocation(jobUpdateDto.getLocation());
+        jobById.setWorkLocationType(jobUpdateDto.getWorkLocationType());
+        jobById.setWorkTimeForm(jobUpdateDto.getWorkTimeForm());
+        jobById.setWorkTimeTo(jobUpdateDto.getWorkTimeTo());
+
+        final Job save = jobRepository.save(jobById);
+        LOGGER.info(save.toString());
+
+        final JobUpdateDto result = modelMapper.modelMapper().map(save, JobUpdateDto.class);
+        result.setCategoryCodes(categories.stream().map(Category::getCode).toList());
+        LOGGER.info(result.toString());
+
+        return result;
     }
 
     @Override

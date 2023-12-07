@@ -2,6 +2,7 @@ package com.lab.haer.controller;
 
 import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
+import com.lab.haer.dto.JobUpdateDto;
 import com.lab.haer.service.JobService;
 import com.lab.haer.util.ResponseHandler;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,16 @@ public class JobController {
         try {
             final JobCreateDto result = jobService.createJob(jobCreateDto);
             return ResponseHandler.generateResponse("Success", HttpStatus.CREATED, result);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
+    @PutMapping("/jobs/{id}")
+    public ResponseEntity<Object> updateJob(@PathVariable("id") String id, @RequestBody JobUpdateDto jobUpdateDto) {
+        try {
+            final JobUpdateDto result = jobService.updateJob(id, jobUpdateDto);
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
