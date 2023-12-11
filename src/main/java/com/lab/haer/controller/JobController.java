@@ -3,6 +3,7 @@ package com.lab.haer.controller;
 import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
 import com.lab.haer.dto.JobUpdateDto;
+import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.service.JobService;
 import com.lab.haer.util.ResponseHandler;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,16 @@ public class JobController {
     public ResponseEntity<Object> findJobByUserId(@PathVariable("userId") String userId) {
         try {
             final List<JobAllResponseDto> result = jobService.getJobByUserId(userId);
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
+    @GetMapping("/jobs/hr/{userId}")
+    public ResponseEntity<Object> getAppliedJobByHRUserId(@PathVariable("userId") String userId) {
+        try {
+            final List<ApplyHRResponseDto> result = jobService.getAppliedJobByHRUserId(userId);
             return ResponseHandler.generateResponse("Success", HttpStatus.OK, result);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

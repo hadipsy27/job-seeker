@@ -4,6 +4,7 @@ import com.lab.haer.config.ModelMapperConfig;
 import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
 import com.lab.haer.dto.JobUpdateDto;
+import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.entity.Job;
 import com.lab.haer.entity.User;
@@ -142,4 +143,29 @@ public class JobServiceImpl implements JobService {
             return response;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ApplyHRResponseDto> getAppliedJobByHRUserId(String userId) {
+        List<Object[]> result = jobRepository.findJobApplied(userId);
+
+        return result.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    private ApplyHRResponseDto mapToDto(Object[] result) {
+        ApplyHRResponseDto dto = new ApplyHRResponseDto();
+
+        dto.setJobId((String) result[0]);
+        dto.setJobTitle((String) result[1]);
+        dto.setJobDescription((String) result[2]);
+        dto.setApplyId((String) result[3]);
+        dto.setApplied((boolean) result[4]);
+        dto.setUserId((String) result[5]);
+        dto.setUsername((String) result[6]);
+        dto.setFullName((String) result[7]);
+
+        return dto;
+    }
+
 }

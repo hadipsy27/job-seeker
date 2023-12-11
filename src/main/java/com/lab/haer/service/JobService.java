@@ -3,6 +3,7 @@ package com.lab.haer.service;
 import com.lab.haer.dto.JobAllResponseDto;
 import com.lab.haer.dto.JobCreateDto;
 import com.lab.haer.dto.JobUpdateDto;
+import com.lab.haer.dto.apply.ApplyHRResponseDto;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface JobService {
     JobAllResponseDto findJobById(String id);
 
     List<JobAllResponseDto> getJobByUserId(String userId);
+
+    List<ApplyHRResponseDto> getAppliedJobByHRUserId(String userId);
 
 }
