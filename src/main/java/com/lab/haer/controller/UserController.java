@@ -21,9 +21,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<Object> createUser(@RequestBody UserCreateDto userCreateDto) {
+    public ResponseEntity<Object> createUserRoleUser(@RequestBody UserCreateDto userCreateDto) {
         try{
-            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto);
+            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, "1");
+            return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+    }
+
+    @PostMapping("/hr")
+    public ResponseEntity<Object> createUserRoleHR(@RequestBody UserCreateDto userCreateDto) {
+        try{
+            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, "2");
             return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

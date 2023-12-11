@@ -6,7 +6,7 @@ import com.lab.haer.entity.User;
 
 public interface UserService {
 
-    UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto);
+    UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto, String roleId);
 
     User findUserById(String id);
 }

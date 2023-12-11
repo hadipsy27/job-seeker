@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private RoleService roleService;
 
     @Override
-    public UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto) {
+    public UserResponseDto createAndUpdateUser(UserCreateDto userCreateDto, String roleId) {
 
         final User user = new User();
         user.setFullName(userCreateDto.getFullName());
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setCompany(userCreateDto.getCompany());
 
         // Role can set by static attribute list [ROLE_USER, ROLE_HR, ROLE_ADMIN]
-        final List<Role> roleById = roleService.findRoleByIdList(List.of(ROLE_USER));
+        final List<Role> roleById = roleService.findRoleByIdList(List.of(roleId));
         LOGGER.info(roleById.toString());
         user.setRoles(roleById);
 
