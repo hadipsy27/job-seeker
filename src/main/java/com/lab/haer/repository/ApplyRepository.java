@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ApplyRepository extends JpaRepository<Apply, String> {
 
@@ -14,6 +15,7 @@ public interface ApplyRepository extends JpaRepository<Apply, String> {
     @Query(value = "SELECT " +
             "a.id AS id, " +
             "a.applied AS applied, " +
+            "a.status AS status, " +
             "a.interview_date AS interviewDate, " +
             "a.interview_time AS interviewTime, " +
             "a.interview_link AS interviewLink, " +

@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplyHRDetailResponseDto {
+public class ApplyJobUserResponseDto {
 
     private String id;
     private boolean applied;

@@ -161,9 +161,10 @@ public class JobServiceImpl implements JobService {
         dto.setJobDescription((String) result[2]);
         dto.setApplyId((String) result[3]);
         dto.setApplied((boolean) result[4]);
-        dto.setUserId((String) result[5]);
-        dto.setUsername((String) result[6]);
-        dto.setFullName((String) result[7]);
+        dto.setStatus((String) result[5]);
+        dto.setUserId((String) result[6]);
+        dto.setUsername((String) result[7]);
+        dto.setFullName((String) result[8]);
 
         return dto;
     }

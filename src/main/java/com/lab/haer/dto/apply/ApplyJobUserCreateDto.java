@@ -1,5 +1,6 @@
 package com.lab.haer.dto.apply;
 
+import com.lab.haer.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplyHRDetailResponseDto {
+public class ApplyJobUserCreateDto {
 
     private String id;
     private boolean applied;

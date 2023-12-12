@@ -1,5 +1,6 @@
 package com.lab.haer.entity;
 
+import com.lab.haer.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,10 @@ public class Apply {
 
     @Column(nullable = false)
     private boolean applied;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private Status status = Status.WAITING;
 
     @Column(name = "interview_date")
     private LocalDate interviewDate;

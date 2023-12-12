@@ -2,13 +2,12 @@ package com.lab.haer.service.impl;
 
 import com.lab.haer.config.ModelMapperConfig;
 import com.lab.haer.dto.JobAllResponseDto;
-import com.lab.haer.dto.apply.ApplyHRDetailResponseDto;
-import com.lab.haer.dto.apply.ApplyHRResponseDto;
-import com.lab.haer.dto.apply.ApplyUserCreateDto;
+import com.lab.haer.dto.apply.*;
 import com.lab.haer.entity.Apply;
 import com.lab.haer.entity.Job;
 import com.lab.haer.entity.User;
 import com.lab.haer.repository.ApplyRepository;
+import com.lab.haer.repository.JobRepository;
 import com.lab.haer.service.ApplyService;
 import com.lab.haer.service.JobService;
 import com.lab.haer.service.UserService;
@@ -30,6 +29,8 @@ public class ApplyServiceImpl implements ApplyService {
     private ModelMapperConfig modelMapperConfig;
     private JobService jobService;
     private UserService userService;
+
+    private JobRepository jobRepository;
 
     @Override
     public List<ApplyHRResponseDto> findAllApplyJob() {
@@ -82,33 +83,29 @@ public class ApplyServiceImpl implements ApplyService {
             // Assuming the order of elements in the result array is [Apply, Job, User]
             responseDto.setId((String) resultArray[0]);
             responseDto.setApplied((boolean) resultArray[1]);
-            responseDto.setInterviewDate((LocalDate) resultArray[2]);
+            responseDto.setStatus(resultArray[2] != null ? (String) resultArray[2] : null);
+            responseDto.setInterviewDate((LocalDate) resultArray[3]);
+            responseDto.setInterviewTime(resultArray[4] != null ? ((java.sql.Time) resultArray[4]).toLocalTime() : null);
+            responseDto.setInterviewLink((String) resultArray[5]);
 
-            // Check for null before converting to LocalTime
-            responseDto.setInterviewTime(resultArray[3] != null ? ((java.sql.Time) resultArray[3]).toLocalTime() : null);
+            responseDto.setJobId((String) resultArray[6]);
+            responseDto.setTitle((String) resultArray[7]);
+            responseDto.setDescription((String) resultArray[8]);
+            responseDto.setSortDescription((String) resultArray[9]);
+            responseDto.setUploadDate((String) resultArray[10]);
+            responseDto.setSalaryForm((String) resultArray[11]);
+            responseDto.setSalaryTo((String) resultArray[12]);
+            responseDto.setDegreeLevel((String) resultArray[13]);
+            responseDto.setWorkTimeType((String) resultArray[14]);
+            responseDto.setLocation((String) resultArray[15]);
+            responseDto.setWorkLocationType((String) resultArray[16]);
+            responseDto.setWorkTimeForm(resultArray[17] != null ? ((java.sql.Time) resultArray[17]).toLocalTime() : null);
+            responseDto.setWorkTimeTo(resultArray[18] != null ? ((java.sql.Time) resultArray[18]).toLocalTime() : null);
 
-            responseDto.setInterviewLink((String) resultArray[4]);
-
-            responseDto.setJobId((String) resultArray[5]);
-            responseDto.setTitle((String) resultArray[6]);
-            responseDto.setDescription((String) resultArray[7]);
-            responseDto.setSortDescription((String) resultArray[8]);
-            responseDto.setUploadDate((String) resultArray[9]);
-            responseDto.setSalaryForm((String) resultArray[10]);
-            responseDto.setSalaryTo((String) resultArray[11]);
-            responseDto.setDegreeLevel((String) resultArray[12]);
-            responseDto.setWorkTimeType((String) resultArray[13]);
-            responseDto.setLocation((String) resultArray[14]);
-            responseDto.setWorkLocationType((String) resultArray[15]);
-
-            // Check for null before converting to LocalTime
-            responseDto.setWorkTimeForm(resultArray[16] != null ? ((java.sql.Time) resultArray[16]).toLocalTime() : null);
-            responseDto.setWorkTimeTo(resultArray[17] != null ? ((java.sql.Time) resultArray[17]).toLocalTime() : null);
-
-            responseDto.setUserId((String) resultArray[18]);
-            responseDto.setUsername((String) resultArray[19]);
-            responseDto.setFullName((String) resultArray[20]);
-            responseDto.setEmail((String) resultArray[21]);
+            responseDto.setUserId((String) resultArray[19]);
+            responseDto.setUsername((String) resultArray[20]);
+            responseDto.setFullName((String) resultArray[21]);
+            responseDto.setEmail((String) resultArray[22]);
 
             return responseDto;
         } else {
@@ -116,5 +113,27 @@ public class ApplyServiceImpl implements ApplyService {
             throw new RuntimeException("Apply with ID " + applyId + " not found");
         }
     }
+
+    @Override
+    public ApplyJobUserResponseDto HRAppliedJobUser(String applyId, ReplyUserApplyJobDTO replyUserApplyJobDTO) {
+        final ApplyHRDetailResponseDto jobUserApplied = findJobUserApplied(applyId); // -> kayaknya enakan ambil langsung dari repository dah
+
+        final Job job = jobRepository.findJobById(jobUserApplied.getJobId());
+        if (job.getUser().getId().equals(replyUserApplyJobDTO.getUserId())) { // ---> Masih dipikirkan logic nya
+            throw new RuntimeException("You can't reply your own job");
+        }
+
+        jobUserApplied.setStatus(replyUserApplyJobDTO.getStatus());
+        jobUserApplied.setInterviewDate(replyUserApplyJobDTO.getInterviewDate());
+        jobUserApplied.setInterviewTime(replyUserApplyJobDTO.getInterviewTime());
+        jobUserApplied.setInterviewLink(replyUserApplyJobDTO.getInterviewLink());
+
+        final Apply save = applyRepository.save(modelMapperConfig.modelMapper().map(jobUserApplied, Apply.class));
+        LOGGER.info("{}", save);
+
+        final ApplyJobUserResponseDto result = modelMapperConfig.modelMapper().map(save, ApplyJobUserResponseDto.class);
+        return result;
+    }
+
 
 }

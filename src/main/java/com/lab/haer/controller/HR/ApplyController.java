@@ -1,8 +1,6 @@
 package com.lab.haer.controller.HR;
 
-import com.lab.haer.dto.apply.ApplyHRDetailResponseDto;
-import com.lab.haer.dto.apply.ApplyHRResponseDto;
-import com.lab.haer.dto.apply.ApplyUserCreateDto;
+import com.lab.haer.dto.apply.*;
 import com.lab.haer.service.ApplyService;
 import com.lab.haer.util.ResponseHandler;
 import lombok.AllArgsConstructor;
@@ -44,6 +42,16 @@ public class ApplyController {
         try{
             final ApplyHRDetailResponseDto jobUserApplied = applyService.findJobUserApplied(applyId);
             return ResponseHandler.generateResponse("Success", HttpStatus.OK, jobUserApplied);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+    }
+
+    @PutMapping("/hr/apply-job-user/{applyId}")
+    public ResponseEntity<Object> HRAppliedJobUser(@PathVariable("applyId") String applyId, @RequestBody ReplyUserApplyJobDTO replyUserApplyJobDTO){
+        try{
+            final ApplyJobUserResponseDto response = applyService.HRAppliedJobUser(applyId, replyUserApplyJobDTO);
+            return ResponseHandler.generateResponse("Success", HttpStatus.OK, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
