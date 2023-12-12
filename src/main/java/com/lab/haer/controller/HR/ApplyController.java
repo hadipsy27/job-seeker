@@ -1,6 +1,7 @@
 package com.lab.haer.controller.HR;
 
 import com.lab.haer.dto.apply.ApplyHRDetailResponseDto;
+import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.dto.apply.ApplyUserCreateDto;
 import com.lab.haer.service.ApplyService;
 import com.lab.haer.util.ResponseHandler;
@@ -31,7 +32,7 @@ public class ApplyController {
     @GetMapping("/hr/apply")
     public ResponseEntity<Object> getAllApply() {
         try {
-            final List<ApplyUserCreateDto> response = applyService.findAllApplyJob();
+            final List<ApplyHRResponseDto> response = applyService.findAllApplyJob();
             return ResponseHandler.generateResponse("Success to get all Apply!!", HttpStatus.OK, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

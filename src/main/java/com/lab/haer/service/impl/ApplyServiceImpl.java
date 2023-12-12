@@ -32,16 +32,20 @@ public class ApplyServiceImpl implements ApplyService {
     private UserService userService;
 
     @Override
-    public List<ApplyUserCreateDto> findAllApplyJob() {
+    public List<ApplyHRResponseDto> findAllApplyJob() {
         final List<Apply> allApply = applyRepository.findAll();
-        return allApply.stream().map(apply -> modelMapperConfig.modelMapper()
-                .map(apply, ApplyUserCreateDto.class)
-        ).collect(Collectors.toList());
-    }
+        LOGGER.info("{}", allApply);
 
-    @Override
-    public List<ApplyHRResponseDto> findJobApplied() {
-        return null;
+        final List<ApplyHRResponseDto> collect = allApply.stream().map(apply -> modelMapperConfig.modelMapper()
+                .map(apply, ApplyHRResponseDto.class)).collect(Collectors.toList());
+
+        for (var result : collect) {
+            final User user = userService.findUserById(result.getUserId());
+            result.setUsername(user.getUsername());
+            result.setFullName(user.getFullName());
+        }
+
+        return collect;
     }
 
     @Override

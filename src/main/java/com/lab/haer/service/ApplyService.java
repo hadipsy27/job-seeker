@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface ApplyService {
 
-    public List<ApplyUserCreateDto> findAllApplyJob();
+    public List<ApplyHRResponseDto> findAllApplyJob();
 
-    public List<ApplyHRResponseDto> findJobApplied();
     public ApplyUserCreateDto createUserApplyJob(ApplyUserCreateDto applyUserCreateDto);
 
     public ApplyHRDetailResponseDto findJobUserApplied(String applyId);
