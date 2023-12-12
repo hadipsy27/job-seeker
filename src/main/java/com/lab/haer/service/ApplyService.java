@@ -1,5 +1,6 @@
 package com.lab.haer.service;
 
+import com.lab.haer.dto.apply.ApplyHRDetailResponseDto;
 import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.dto.apply.ApplyUserCreateDto;
 
@@ -11,5 +12,7 @@ public interface ApplyService {
 
     public List<ApplyHRResponseDto> findJobApplied();
     public ApplyUserCreateDto createUserApplyJob(ApplyUserCreateDto applyUserCreateDto);
+
+    public ApplyHRDetailResponseDto findJobUserApplied(String applyId);
 
 }
