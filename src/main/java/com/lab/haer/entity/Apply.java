@@ -1,11 +1,13 @@
 package com.lab.haer.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lab.haer.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -28,7 +30,7 @@ public class Apply {
     private Status status = Status.WAITING;
 
     @Column(name = "interview_date")
-    private LocalDate interviewDate;
+    private Date interviewDate;
     @Column(name = "interview_time")
     private LocalTime interviewTime;
     @Column(name = "interview_link")

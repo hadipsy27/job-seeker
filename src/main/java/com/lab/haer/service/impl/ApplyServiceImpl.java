@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -116,15 +117,20 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public ApplyJobUserResponseDto HRAppliedJobUser(String applyId, ReplyUserApplyJobDTO replyUserApplyJobDTO) {
-        final ApplyHRDetailResponseDto jobUserApplied = findJobUserApplied(applyId); // -> kayaknya enakan ambil langsung dari repository dah
+
+        final ApplyHRDetailResponseDto jobUserApplied = findJobUserApplied(applyId);
 
         final Job job = jobRepository.findJobById(jobUserApplied.getJobId());
-        if (job.getUser().getId().equals(replyUserApplyJobDTO.getUserId())) { // ---> Masih dipikirkan logic nya
-            throw new RuntimeException("You can't reply your own job");
+        if (!job.getUser().getId().equals(replyUserApplyJobDTO.getUserId())) {
+            throw new RuntimeException("You cannot reply to work that was not created by you");
         }
 
+//        if(!job.getUser().getRoles().get(0).getName().equals("ROLE_HR")){
+//            throw new RuntimeException("You can't reply because you not Human Resource");
+//        }
+
         jobUserApplied.setStatus(replyUserApplyJobDTO.getStatus());
-        jobUserApplied.setInterviewDate(replyUserApplyJobDTO.getInterviewDate());
+        jobUserApplied.setInterviewDate(replyUserApplyJobDTO.getInterviewDate().toLocalDate());
         jobUserApplied.setInterviewTime(replyUserApplyJobDTO.getInterviewTime());
         jobUserApplied.setInterviewLink(replyUserApplyJobDTO.getInterviewLink());
 
