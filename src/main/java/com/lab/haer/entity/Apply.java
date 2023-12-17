@@ -30,7 +30,8 @@ public class Apply {
     private Status status = Status.WAITING;
 
     @Column(name = "interview_date")
-    private Date interviewDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate interviewDate;
     @Column(name = "interview_time")
     private LocalTime interviewTime;
     @Column(name = "interview_link")

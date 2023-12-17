@@ -17,7 +17,7 @@ public class ReplyUserApplyJobDTO {
     private String userId;
     private String status;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date interviewDate;
+    private LocalDate interviewDate;
     @JsonFormat(pattern = "HH.mm")
     private LocalTime interviewTime;
     private String interviewLink;
