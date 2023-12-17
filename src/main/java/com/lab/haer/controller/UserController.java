@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
@@ -23,7 +26,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Object> createUserRoleUser(@RequestBody UserCreateDto userCreateDto) {
         try{
-            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, "1");
+            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, Collections.singletonList("3"));
             return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
@@ -34,7 +37,7 @@ public class UserController {
     @PostMapping("/hr")
     public ResponseEntity<Object> createUserRoleHR(@RequestBody UserCreateDto userCreateDto) {
         try{
-            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, "2");
+            UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, List.of("2","3"));
             return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

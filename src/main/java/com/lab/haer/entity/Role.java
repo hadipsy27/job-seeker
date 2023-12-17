@@ -12,7 +12,8 @@ import java.util.UUID;
 public class Role {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @Column(unique = true)
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;
