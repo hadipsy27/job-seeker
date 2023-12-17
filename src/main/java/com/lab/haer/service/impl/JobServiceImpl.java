@@ -7,6 +7,7 @@ import com.lab.haer.dto.JobUpdateDto;
 import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.entity.Job;
+import com.lab.haer.entity.Role;
 import com.lab.haer.entity.User;
 import com.lab.haer.repository.JobRepository;
 import com.lab.haer.service.CategoryService;
@@ -62,6 +63,9 @@ public class JobServiceImpl implements JobService {
 
         final User userById = userService.findUserById(jobCreateDto.getUserId());
         LOGGER.info(userById.toString());
+        if (!userById.getRoles().stream().anyMatch(role -> role.getName().equals("HR"))) {
+            throw new RuntimeException("You can't create a Job because you not Human Resource!!");
+        }
         job.setUser(userById);
 
         final Job save = jobRepository.save(job);
