@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +38,10 @@ public class ApplyServiceImpl implements ApplyService {
         final List<Apply> allApply = applyRepository.findAll();
         LOGGER.info("{}", allApply);
 
-        final List<ApplyHRResponseDto> collect = allApply.stream().map(apply -> modelMapperConfig.modelMapper()
-                .map(apply, ApplyHRResponseDto.class)).collect(Collectors.toList());
+        final List<ApplyHRResponseDto> collect = allApply.stream()
+                .map(apply -> modelMapperConfig.modelMapper()
+                        .map(apply, ApplyHRResponseDto.class))
+                .collect(Collectors.toList());
 
         for (var result : collect) {
             final User user = userService.findUserById(result.getUserId());
@@ -85,7 +87,7 @@ public class ApplyServiceImpl implements ApplyService {
             responseDto.setId((String) resultArray[0]);
             responseDto.setApplied((boolean) resultArray[1]);
             responseDto.setStatus(resultArray[2] != null ? (String) resultArray[2] : null);
-            responseDto.setInterviewDate((LocalDate) resultArray[3]);
+            responseDto.setInterviewDate(((Date) resultArray[3]).toLocalDate());
             responseDto.setInterviewTime(resultArray[4] != null ? ((java.sql.Time) resultArray[4]).toLocalTime() : null);
             responseDto.setInterviewLink((String) resultArray[5]);
 
