@@ -1,6 +1,7 @@
 package com.lab.haer.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lab.haer.enums.JobSeekerAccepted;
 import com.lab.haer.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,13 @@ public class Apply {
     private LocalTime interviewTime;
     @Column(name = "interview_link")
     private String interviewLink;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "job_seeker_accepted", nullable = false)
+    private JobSeekerAccepted jobSeekerAccepted = JobSeekerAccepted.valueOf("WAITING");
+
+    @Column(name = "job_seeker_reply", columnDefinition = "TEXT")
+    private String jobSeekerReply;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id", nullable = false)
