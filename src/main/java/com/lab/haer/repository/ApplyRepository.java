@@ -1,16 +1,32 @@
 package com.lab.haer.repository;
 
+import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.entity.Apply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ApplyRepository extends JpaRepository<Apply, String> {
 
-    List<Apply> findAll();
+    @Query("SELECT new com.lab.haer.dto.apply.ApplyHRResponseDto(" +
+            "a.id, " +
+            "a.applied, " +
+            "a.interviewDate, " +
+            "a.interviewLink, " +
+            "a.interviewTime, " +
+            "a.status, " +
+            "j.id, " +
+            "j.title, " +
+            "j.description, " +
+            "u.id, " +
+            "u.username, " +
+            "u.fullName) " +
+            "FROM Apply a " +
+            "JOIN a.job j " +
+            "JOIN a.user u")
+    List<ApplyHRResponseDto> findAllApply();
 
     @Query(value = "SELECT " +
             "a.id AS id, " +

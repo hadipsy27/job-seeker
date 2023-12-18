@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,21 +35,16 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public List<ApplyHRResponseDto> findAllApplyJob() {
-        final List<Apply> allApply = applyRepository.findAll();
+
+        final List<ApplyHRResponseDto> allApply = applyRepository.findAllApply();
         LOGGER.info("{}", allApply);
 
-        final List<ApplyHRResponseDto> collect = allApply.stream()
-                .map(apply -> modelMapperConfig.modelMapper()
-                        .map(apply, ApplyHRResponseDto.class))
-                .collect(Collectors.toList());
-
-        for (var result : collect) {
-            final User user = userService.findUserById(result.getUserId());
-            result.setUsername(user.getUsername());
-            result.setFullName(user.getFullName());
+        if (allApply == null || allApply.isEmpty()) {
+            LOGGER.info("No Apply entities found.");
+            return Collections.emptyList(); // or throw an exception, depending on your requirements
         }
 
-        return collect;
+        return allApply;
     }
 
     @Override
