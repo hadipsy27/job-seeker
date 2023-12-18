@@ -7,7 +7,6 @@ import com.lab.haer.dto.JobUpdateDto;
 import com.lab.haer.dto.apply.ApplyHRResponseDto;
 import com.lab.haer.entity.Category;
 import com.lab.haer.entity.Job;
-import com.lab.haer.entity.Role;
 import com.lab.haer.entity.User;
 import com.lab.haer.repository.JobRepository;
 import com.lab.haer.service.CategoryService;
@@ -18,6 +17,8 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -157,20 +158,25 @@ public class JobServiceImpl implements JobService {
                 .collect(Collectors.toList());
     }
 
-    private ApplyHRResponseDto mapToDto(Object[] result) {
-        ApplyHRResponseDto dto = new ApplyHRResponseDto();
+    public ApplyHRResponseDto mapToDto(Object[] result) {
 
-        dto.setJobId((String) result[0]);
-        dto.setJobTitle((String) result[1]);
-        dto.setJobDescription((String) result[2]);
-        dto.setApplyId((String) result[3]);
-        dto.setApplied((boolean) result[4]);
-        dto.setStatus((String) result[5]);
-        dto.setUserId((String) result[6]);
-        dto.setUsername((String) result[7]);
-        dto.setFullName((String) result[8]);
+        final ApplyHRResponseDto build = ApplyHRResponseDto.builder()
+                .jobId((String) result[0])
+                .jobTitle((String) result[1])
+                .jobDescription((String) result[2])
+                .applyId((String) result[3])
+                .applied((Boolean) result[4])
+                .interviewDate(result[5] != null ? ((Date) result[5]).toLocalDate() : null)
+                .interviewTime(result[6] != null ? ((Time) result[6]).toLocalTime() : null)
+                .interviewLink((String) result[7])
+                .status((String) result[8])
+                .userId((String) result[9])
+                .username((String) result[10])
+                .fullName((String) result[11])
+                .build();
 
-        return dto;
+        LOGGER.info("{}", build);
+        return build;
     }
 
 }

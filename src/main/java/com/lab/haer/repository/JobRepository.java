@@ -19,6 +19,9 @@ public interface JobRepository extends JpaRepository<Job, String> {
             "    j.description AS job_description,\n" +
             "    a.id AS apply_id,\n" +
             "    a.applied AS applied,\n" +
+            "    a.interview_date AS interview_date,\n" +
+            "    a.interview_time AS interview_time,\n" +
+            "    a.interview_link AS interview_link,\n" +
             "    a.status AS status,\n" +
             "    u.id AS user_id,\n" +
             "    u.username AS username,\n" +
