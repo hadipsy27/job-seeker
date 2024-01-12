@@ -26,6 +26,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Object> createUserRoleUser(@RequestBody UserCreateDto userCreateDto) {
         try{
+            userCreateDto.setCompany(null);
             UserResponseDto response =  userService.createAndUpdateUser(userCreateDto, Collections.singletonList("3"));
             return ResponseHandler.generateResponse("Successfully added User!!", HttpStatus.CREATED, response);
         } catch (Exception e) {

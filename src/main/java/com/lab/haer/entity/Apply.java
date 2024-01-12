@@ -40,7 +40,7 @@ public class Apply {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "job_seeker_accepted", nullable = false)
-    private JobSeekerAccepted jobSeekerAccepted = JobSeekerAccepted.valueOf("WAITING");
+    private JobSeekerAccepted jobSeekerAccepted = JobSeekerAccepted.WAITING;
 
     @Column(name = "job_seeker_reply", columnDefinition = "TEXT")
     private String jobSeekerReply;

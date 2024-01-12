@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,45 +70,9 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public ApplyHRDetailResponseDto findJobUserApplied(String applyId) {
-        Object result = applyRepository.findJobUserApplied(applyId);
-
-        if (result != null) {
-            Object[] resultArray = (Object[]) result;
-
-            ApplyHRDetailResponseDto responseDto = new ApplyHRDetailResponseDto();
-
-            // Assuming the order of elements in the result array is [Apply, Job, User]
-            responseDto.setId((String) resultArray[0]);
-            responseDto.setApplied((boolean) resultArray[1]);
-            responseDto.setStatus(resultArray[2] != null ? (String) resultArray[2] : null);
-            responseDto.setInterviewDate(((Date) resultArray[3]).toLocalDate());
-            responseDto.setInterviewTime(resultArray[4] != null ? ((java.sql.Time) resultArray[4]).toLocalTime() : null);
-            responseDto.setInterviewLink((String) resultArray[5]);
-
-            responseDto.setJobId((String) resultArray[6]);
-            responseDto.setTitle((String) resultArray[7]);
-            responseDto.setDescription((String) resultArray[8]);
-            responseDto.setSortDescription((String) resultArray[9]);
-            responseDto.setUploadDate((String) resultArray[10]);
-            responseDto.setSalaryForm((String) resultArray[11]);
-            responseDto.setSalaryTo((String) resultArray[12]);
-            responseDto.setDegreeLevel((String) resultArray[13]);
-            responseDto.setWorkTimeType((String) resultArray[14]);
-            responseDto.setLocation((String) resultArray[15]);
-            responseDto.setWorkLocationType((String) resultArray[16]);
-            responseDto.setWorkTimeForm(resultArray[17] != null ? ((java.sql.Time) resultArray[17]).toLocalTime() : null);
-            responseDto.setWorkTimeTo(resultArray[18] != null ? ((java.sql.Time) resultArray[18]).toLocalTime() : null);
-
-            responseDto.setUserId((String) resultArray[19]);
-            responseDto.setUsername((String) resultArray[20]);
-            responseDto.setFullName((String) resultArray[21]);
-            responseDto.setEmail((String) resultArray[22]);
-
-            return responseDto;
-        } else {
-            // Handle the case where the result is null (not found)
-            throw new RuntimeException("Apply with ID " + applyId + " not found");
-        }
+        ApplyHRDetailResponseDto applyHRDetailResponseDto = applyRepository.findJobUserApplied(applyId);
+        LOGGER.info("{}", applyHRDetailResponseDto);
+        return applyHRDetailResponseDto;
     }
 
     @Override
@@ -123,7 +86,7 @@ public class ApplyServiceImpl implements ApplyService {
             throw new RuntimeException("You cannot reply to work that was not created by you");
         }
 
-        if (!job.getUser().getRoles().stream().anyMatch(role -> role.getName().equals("HR"))) {
+        if (job.getUser().getRoles().stream().noneMatch(role -> role.getName().equals("HR"))) {
             throw new RuntimeException("You can't reply because you not Human Resource");
         }
 

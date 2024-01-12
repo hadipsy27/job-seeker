@@ -1,7 +1,6 @@
 package com.lab.haer.dto.apply;
 
 import com.lab.haer.enums.Status;
-import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
